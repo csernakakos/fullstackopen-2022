@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import "./App.css";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
@@ -11,7 +11,10 @@ export default function App() {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filteredPersons, setFilteredPersons] = useState(persons);
+  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
+  console.log(message);
   console.log(`Rendered ${persons.length} persons.`)
 
   const handleDeletion = (id) => {
@@ -42,6 +45,8 @@ export default function App() {
     <div>
       <h2>Phonebook</h2>
 
+      {errorMessage && <p className="message error">{errorMessage}</p>}
+
       <Filter
         persons={persons}
         setFilteredPersons={setFilteredPersons}
@@ -52,11 +57,14 @@ export default function App() {
             persons={persons}
             newName={newName}
             newNumber={newNumber}
+            message={message}
             setPersons={setPersons}
             setFilteredPersons={setFilteredPersons}
             filteredPersons={filteredPersons}
             setNewName={setNewName}
             setNewNumber={setNewNumber}
+            setMessage={setMessage}
+            setErrorMessage={setErrorMessage}
       />
 
       <h3>Numbers</h3>

@@ -5,10 +5,13 @@ export default function PersonForm({
     persons,
     newName,
     newNumber,
+    message,
     setPersons,
     setFilteredPersons,
     setNewName,
     setNewNumber,
+    setMessage,
+    setErrorMessage,
 }) {
 
     const nameInput = useRef();
@@ -60,6 +63,10 @@ export default function PersonForm({
                 });
                 setPersons([...updatedArray]);
                 setFilteredPersons([...updatedArray]);
+              })
+              .catch((error) => {
+                setErrorMessage(`${existingPerson.name} is already deleted.`);
+                setTimeout(() => {setErrorMessage(null)}, 5000);
               });
 
               // Reset the input fields and focus in on nameInput:
@@ -86,11 +93,16 @@ export default function PersonForm({
           nameInput.current.focus();
           setNewName("");
           setNewNumber("");
+
+          // Show success message:
+          setMessage(`Added ${newPerson.name} to the phonebook.`);
+          setTimeout(() => {setMessage(null)}, 5000);
         }
       }
 
 
     return (
+      <div>
         <form onSubmit={handleSubmit}>
             <div>
             name: <input
@@ -110,5 +122,8 @@ export default function PersonForm({
             <button type="submit">Add</button>
             </div>
         </form>
+
+        {message && <p className="message success">{message}</p>}
+      </div>
     )
 }
