@@ -31,8 +31,6 @@ export default function App() {
       />
 
       <Results
-        input={input}
-        countries={countries}
         filteredCountries={filteredCountries}
       />
     </div>

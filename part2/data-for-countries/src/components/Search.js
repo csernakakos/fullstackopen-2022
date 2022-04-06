@@ -1,17 +1,14 @@
 export default function Search({input, setInput, countries, setFilteredCountries}) {
 
     const handleInput = (e) => {
-        const enteredString = e.target.value.toLowerCase();
-        setInput(enteredString);
-
-        console.log(enteredString, "INPUT");
-
+        setInput(e.target.value);
+        
         const newCountries = countries.filter((country) => {
             return country
                 .name
                 .common
                 .toLowerCase()
-                .includes(enteredString)
+                .includes(e.target.value.toLowerCase())
         });
 
         setFilteredCountries(newCountries);
@@ -20,10 +17,11 @@ export default function Search({input, setInput, countries, setFilteredCountries
     return (
         <div>
             <form>
-                Find countries: <input
-                value={input}
-                onChange={handleInput}
-                type="text"
+                Find countries: 
+                <input
+                    value={input}
+                    onChange={handleInput}
+                    type="text"
                 />
             </form>
         </div>

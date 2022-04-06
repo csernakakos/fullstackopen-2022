@@ -1,10 +1,20 @@
-// import { useState } from "react";
+import { useState } from "react";
+import Country from "../components/Country";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Results({input, countries, filteredCountries}) {
-    
-    // const [languages, setLanguages] = useState([]);
+export default function Results({filteredCountries}) {
     const searchResults = filteredCountries.length;
 
+    const [countryDetails, setCountryDetails] = useState(null);
+
+    const handleClick = (country) => {
+        console.log(country);
+        setCountryDetails(country);
+    }
+
+    // RENDER RESULTS CONDITIONALLY:
+
+    // If more than 10 search results:
     if (searchResults > 10) {
         return (
             <div className="results">
@@ -15,16 +25,29 @@ export default function Results({input, countries, filteredCountries}) {
         )
     }
 
+    // If search results are between 1 and 10:
     if (searchResults > 1 && searchResults <= 10) {
         return (
             <div className="results">
             {filteredCountries.map((country) => {
-                return <p key={country.id}>{country.name.official}</p>
+                return <div key={uuidv4()}>
+                            <div >
+                                <p style={{display: "inline-block"}}>{country.name.official}</p>
+                                <button
+                                    style={{marginLeft: "10px"}}
+                                    onClick={() => {handleClick(country)}}
+                                >Show details
+                                </button>
+                            </div>
+                        </div>
+                
             })}
+            {countryDetails && <Country country={countryDetails} />}
         </div>
         )
     }
 
+    // If 0 search results:
     if (searchResults < 1) {
         return (
             <div className="results">
@@ -33,39 +56,12 @@ export default function Results({input, countries, filteredCountries}) {
         )
     }
 
-    const country = filteredCountries[0];
-    console.log(country, "SINGLE COUNTRY");
 
-    let languages = [];
-    console.log(country.languages);
-    for (const lang in country.languages) {
-        languages.push(country.languages[lang]);
-
-    };
-    console.log(languages);
-    // setLanguages(languagesArray);
-
-    return (
-        <div className="results">
-        <h2>{country.name.common}</h2>
-
-        <p>Capital: {country.capital[0]}</p>
-        <p>Area: {country.area}</p>
-
-        <h3>Languages:</h3>
-        <ul>
-            {languages.map((language, index) => (
-                <li key={index}>
-                    <p>{language}</p>
-                </li>
-            ))}
-        </ul>
-
-        <p className="flag">{country.flag}</p>
-       
-        </div>
-    )        
-    
-
+    // If exactly 1 search result:
+    if (searchResults === 1) {
+      return (
+          <Country country={filteredCountries[0]}/>
+      )  
+    }
 
 }
