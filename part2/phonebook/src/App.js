@@ -3,6 +3,7 @@ import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 export default function App() {
 
@@ -11,16 +12,31 @@ export default function App() {
   const [newNumber, setNewNumber] = useState("");
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3002/persons")
-      .then(r => {
-          setPersons(r.data);
-          setFilteredPersons(r.data);
-      })
-  }, []);
-
   console.log(`Rendered ${persons.length} persons.`)
+
+  const handleDeletion = (id) => {
+    personService
+      .deleteOne(id)
+      .then(r => {
+        personService
+          .getAll()
+          .then(persons => {
+            setPersons(persons);
+            setFilteredPersons(persons);
+          })
+        alert("deleted!")
+
+      })
+  }
+
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(persons => {
+        setPersons(persons);
+        setFilteredPersons(persons);
+    });
+  }, []);
 
   return (
     <div>
@@ -47,6 +63,7 @@ export default function App() {
 
       <Persons
         filteredPersons={filteredPersons}
+        handleDeletion={handleDeletion}
       />
     </div>
   );
