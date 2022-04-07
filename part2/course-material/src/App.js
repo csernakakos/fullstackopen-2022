@@ -7,7 +7,7 @@ export default function App() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("AKOS");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const addNote = (e) => {
     e.preventDefault();
@@ -33,17 +33,18 @@ export default function App() {
 
   const toggleImportanceOf = (id) => {
     const noteObject = notes[id];
-    console.log(noteObject, "<<<")
     noteObject.important = !(noteObject.important);
 
     const note = notes.find((note) => {return note.id === id});
 
     // Update 1 field in 1 object:
-    const changedNote = {...note, important: !note.important};
+    const changedNote = {...note, important: !!note.important};
 
     noteService
       .update(id, changedNote)
-      .then(returnedNote => {setNotes(notes.map(note => note.id !== id ? note : returnedNote))})
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id !== id ? note : changedNote))
+      })
       .catch(error => {
         setErrorMessage("Note already deleted.");
 
