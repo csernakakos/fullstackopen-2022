@@ -14,8 +14,7 @@ export default function App() {
   const [message, setMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  console.log(message);
-  console.log(`Rendered ${persons.length} persons.`)
+  // console.log(`Rendered ${persons.length} persons.`)
 
   const handleDeletion = (id) => {
     personService
