@@ -64,7 +64,7 @@ const blogs = [
 ];
 const mostBlogs = (blogs) => {
     for (let blog in blogs) {
-        console.log(blog, blogs);
+        console.log(blog.author);
     }
 }
 mostBlogs(blogs);
