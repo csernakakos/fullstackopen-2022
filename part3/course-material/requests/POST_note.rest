@@ -1,6 +1,8 @@
 POST http://localhost:3001/api/notes HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhemFyZG91czM0MyIsImlkIjoiNjI1MmQ0MDM5NjFmOWJlMWYyNmVkMTVjIiwiaWF0IjoxNjQ5NjA2MDMwfQ.YKgP7BJBcazEqumHNPjjp0yPf1yq3z3OUOVpAc4YxNo
 
 {
-    "content": "Sent from VSCODE!"
+    "content": "heyyyyyyou",
+    "important": true
 }

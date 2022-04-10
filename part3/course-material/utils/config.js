@@ -5,6 +5,8 @@ const URL = process.env.NODE_ENV === "test"
     ? process.env.MONGODBURL_TEST
     : process.env.MONGODBURL
 
+console.log(URL);
+
 module.exports = {
     PORT,
     URL,

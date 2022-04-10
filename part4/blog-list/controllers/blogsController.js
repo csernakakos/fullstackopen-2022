@@ -1,15 +1,25 @@
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 // GET_blogs.rest
 const GET_blogs = async (request, response) => {
-  console.log("GET_blogs")
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user", {username: 1, name: 1, id: 1});
     response.json(blogs);
   }
 
 // POST_blog.rest
 const POST_blog = async (request, response) => {
-    const blog = new Blog(request.body);
+    const body = request.body;
+    const user = await User.findById(body.userId);
+
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      user: request.user._id,
+    });
+
 
     if (!blog.title || !blog.url) {
       response.status(400).end()
@@ -20,6 +30,10 @@ const POST_blog = async (request, response) => {
     }
 
     const result = await blog.save();
+
+    request.user.blogs = request.user.blogs.concat(result._id);
+    
+    await request.user.save();
     response.status(201).json(result);
   };
 
@@ -43,15 +57,31 @@ const PUT_blog = async (request, response) => {
 // DELETE_blog.rest
 const DELETE_blog = async (request, response) => {
   const {id} = request.params;
+  const {user} = request;
+
+  if (!user) {
+    return response.status(401).json({
+      error: "You're not authorized."
+    })
+  };
 
   const blog = await Blog.findById(id);
 
   if (!blog) {
-    return console.log("NO SUCH BLOG");
+    return response.status(401).json({
+      error: "No such blog."
+    })
+  }
+
+  if (blog.user.toString() === user._id.toString()) {
+    await Blog.findByIdAndDelete(id);
+    response.status(204).end();
+  } else {
+    response.status(401).json({
+      error: "You're not authorized to delete this blog."
+    })
   }
   
-  await Blog.findByIdAndDelete(id);
-  response.status(204).end();
 }
 
 module.exports = {

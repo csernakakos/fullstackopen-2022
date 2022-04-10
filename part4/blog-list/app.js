@@ -4,12 +4,13 @@ const cors = require("cors");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const blogsRouter = require("./routers/blogsRouter");
+const usersRouter = require("./routers/usersRouter");
+const loginRouter = require("./routers/loginRouter");
 
 // EXPRESS APP
 const app = express();
 
 // DATABASE
-logger.info("Connecting to: ", config.URL);
 mongoose.connect(config.URL)
 .then(() => logger.info("Connected to MongoDB"))
 .catch((err) => {logger.error(err.message)});
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
     res.send("HOME")
 })
 app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/login", loginRouter);
 
 app.listen(config.PORT, () => {
     logger.info(`BLOG-LIST running on port ${config.PORT}...`)

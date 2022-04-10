@@ -1,0 +1,11 @@
+POST http://localhost:3005/api/blogs HTTP/1.1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJsb2dnMjQzNDMyIiwiaWQiOiI2MjUyZTAzMDllNGIxOTRmODdkODA1OWIiLCJpYXQiOjE2NDk2MDcxMDMsImV4cCI6MTY0OTYxMDcwM30.GyBZ_i8UDf8yt1fZsX4nyrFyJb5Jwyynu2P4m-FqVEs
+
+{
+    "title": "JWT",
+    "author": "bloggerGuy",
+    "url": "http",
+    "likes": 5,
+    "userId": "6252e0309e4b194f87d8059b"
+}
