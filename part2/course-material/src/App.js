@@ -72,19 +72,19 @@ export default function App() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("handleLogin", username, password);
-
+  
     try {
       console.log("LOGIN")
       const user = await login({username, password})
-      console.log(user);
-      setUser({
-        user
-      });
+
+      window.localStorage.setItem("NoteAppUser", JSON.stringify(user))
+
+
+      setUser(user);
+      noteService.setToken(user.token);
 
       setUsername("");
       setPassword("");
-
 
     } catch (err) {
       setErrorMessage("Wrong credentials")
@@ -92,37 +92,74 @@ export default function App() {
     }
   }
 
+  const loginForm = () => {
+    return (
+      <form onSubmit={handleLogin}>
+      <div>
+        username
+        <input 
+          onChange={({ target }) => setUsername(target.value)}
+          value={username}
+          name="Username"
+          type="text"
+        />
+
+      </div>
+
+      <div>
+        password
+        <input
+          onChange={({ target }) => setPassword(target.value)}
+          value={password}
+          name="Password"
+          type="password"
+        />
+
+      </div>
+
+      <button type="submit">Log in</button>
+
+    </form>
+    )
+  }
+
+  const noteForm = () => {
+    return (
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit">save</button>
+      </form>
+    )
+  }
+
+  useEffect(() => {
+    const userJSON = window.localStorage.getItem("NoteAppUser");
+
+    if (user) {
+      const user = JSON.parse(userJSON);
+      setUser(user);
+      setToken(user.token);
+    }
+  }, []);
+
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input 
-            onChange={({ target }) => setUsername(target.value)}
-            value={username}
-            name="Username"
-            type="text"
-          />
+      {/* {!user && loginForm()}
+      {user && noteForm()} */}
 
-        </div>
+      {
+        user === null
+          ? loginForm()
+          : <div>
+            <p>{user.username} logged-in</p>
+            {noteForm()}
+            </div>
+      }
 
-        <div>
-          password
-          <input
-            onChange={({ target }) => setPassword(target.value)}
-            value={password}
-            name="Password"
-            type="password"
-          />
 
-        </div>
-
-        <button type="submit">Log in</button>
-
-      </form>
 
       <div>
           <button
@@ -140,10 +177,7 @@ export default function App() {
             />
         )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
+     
     </div>
   );
 };
