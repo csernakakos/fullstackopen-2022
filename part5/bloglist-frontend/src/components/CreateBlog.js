@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function CreateBlog({
     title, author, url,
     setTitle, setAuthor, setUrl,
@@ -41,4 +43,10 @@ export default function CreateBlog({
         
       </div>
     )
+}
+
+CreateBlog.propTypes = {
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
 }

@@ -34,7 +34,7 @@ const POST_blog = async (request, response) => {
     request.user.blogs = request.user.blogs.concat(result._id);
     
     await request.user.save();
-    response.status(201).json(result);
+    return response.status(201).json(result);
   };
 
 // PUT_blog.rest

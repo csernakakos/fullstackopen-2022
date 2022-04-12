@@ -65,7 +65,7 @@ const App = () => {
     }
 
     // send POST request
-    const response = await POST_blog(newBlog);
+    await POST_blog(newBlog);
 
     // reset fields
     setTitle("");
