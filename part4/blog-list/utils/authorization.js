@@ -10,6 +10,8 @@ const protectWithToken = async (req, res, next) => {
         token = authorization.substring(7);
     }
 
+    console.log(req.headers, "<<<<")
+
     const decoded = jwt.verify(token, process.env.SECRET);
 
     if (!decoded.id) {
