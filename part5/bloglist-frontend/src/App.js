@@ -20,6 +20,8 @@ const App = () => {
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
+  const [createNoteVisible, setCreateNoteVisible] = useState(false)
+
 
   // get login details from localStorage
   useEffect(() => {
@@ -123,6 +125,7 @@ const App = () => {
           blogs={blogs}
         />
 
+        {/* <Togglable buttonLabel='login'> */}
         <CreateBlog
           title={title}
           author={author}
