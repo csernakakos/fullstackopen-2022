@@ -5,7 +5,7 @@ import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import Notification from "./components/Notification";
 import LoginDetails from "./components/LoginDetails";
-import {setToken, GET_all_blogs, POST_blog} from './services/blogs'
+import {setToken, GET_all_blogs} from './services/blogs'
 import {POST_login} from "./services/login";
 
 const App = () => {
@@ -15,12 +15,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
-
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-
-  const [createNoteVisible, setCreateNoteVisible] = useState(false)
 
 
   // get login details from localStorage
@@ -55,43 +49,11 @@ const App = () => {
     };
   }
 
-  const handleCreateBlog = async (e) => {
-    e.preventDefault();
-
-    try {
-    // build object out of user input title, author, url
-    const newBlog = {
-      title,
-      author,
-      url,
-    }
-
-    // send POST request
-    await POST_blog(newBlog);
-
-    // reset fields
-    setTitle("");
-    setAuthor("");
-    setUrl("");
-    
-    // setBlogs
-    setBlogs(blogs);
-
-    // seStatusMessage
-    setSuccessMessage("New blog added! :)")
-    setTimeout(() => {setSuccessMessage(null)}, 5000)
-
-    } catch (err) {
-      setErrorMessage("Uh-oh. Something went wrong. :(")
-      setTimeout(() => {setErrorMessage(null)}, 5000)
-    }
-  }
-
   useEffect(() => {
     GET_all_blogs().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [])
+  }, [blogs])
 
   return (
     <div>
@@ -125,15 +87,12 @@ const App = () => {
           blogs={blogs}
         />
 
-        {/* <Togglable buttonLabel='login'> */}
+
         <CreateBlog
-          title={title}
-          author={author}
-          url={url}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
-          handleCreateBlog={handleCreateBlog}
+            setBlogs={setBlogs}
+            blogs={blogs}
+            setSuccessMessage={setSuccessMessage}
+            setErrorMessage={setErrorMessage}
         />
       </>
       }

@@ -22,7 +22,7 @@ const POST_blog = async (request, response) => {
 
 
     if (!blog.title || !blog.url) {
-      response.status(400).end()
+      return response.status(400).end()
     }
 
     if (!blog.likes) {
@@ -32,6 +32,8 @@ const POST_blog = async (request, response) => {
     const result = await blog.save();
 
     request.user.blogs = request.user.blogs.concat(result._id);
+
+    console.log(result);
     
     await request.user.save();
     return response.status(201).json(result);

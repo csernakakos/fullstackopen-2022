@@ -1,5 +1,3 @@
-Skipping to Part6 instead.
-
 Part5:
 - NOTES_REACT: `part2\course-material`
 - NOTES_EXPRESS: `part3\course-material`

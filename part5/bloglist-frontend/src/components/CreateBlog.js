@@ -1,14 +1,56 @@
-import PropTypes from "prop-types";
+import {POST_blog} from '../services/blogs'
+import {useState} from "react";
 
 export default function CreateBlog({
-    title, author, url,
-    setTitle, setAuthor, setUrl,
-    handleCreateBlog,
+    setBlogs,
+    blogs,
+    setSuccessMessage,
+    setErrorMessage,
 }) {
 
+    const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
+    const [url, setUrl] = useState("");
+    const [newNoteClicked, setNewNoteClicked] = useState(false);
 
+    const handleCreateBlog = async (e) => {
+    e.preventDefault();
+
+    try {
+    // build object out of user input title, author, url
+    const newBlog = {
+      title,
+      author,
+      url,
+    }
+    
+    // send POST request
+    await POST_blog(newBlog);
+
+    // reset fields
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    
+    // setBlogs
+    setBlogs(blogs);
+
+    // seStatusMessage
+    setSuccessMessage("New blog added! :)");
+    setTimeout(() => {setSuccessMessage(null)}, 5000);
+
+    setNewNoteClicked(false);
+
+    } catch (err) {
+      setErrorMessage("Uh-oh. Something went wrong. :(")
+      setTimeout(() => {setErrorMessage(null)}, 5000)
+    }
+  }
 
     return (
+        <>
+        {!newNoteClicked && <button onClick={() => {setNewNoteClicked(true)}}>new note</button>}
+        {newNoteClicked && 
         <div>
             <h2>create new</h2>
             <form onSubmit={handleCreateBlog}>
@@ -19,6 +61,7 @@ export default function CreateBlog({
                     value={title}
                     name="title"
                     type="text"
+                    required
                 />
 
                 author:
@@ -27,6 +70,7 @@ export default function CreateBlog({
                     value={author}
                     name="url"
                     type="text"
+                    required
                 />
 
                 url:
@@ -35,18 +79,16 @@ export default function CreateBlog({
                     value={url}
                     name="url"
                     type="text"
+                    required
                 />
 
                 
                 <button>Add blog</button>
+                <button onClick={() => {setNewNoteClicked(false)}}>Cancel</button>
             </form>
         
       </div>
+        }
+        </>
     )
-}
-
-CreateBlog.propTypes = {
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
 }
