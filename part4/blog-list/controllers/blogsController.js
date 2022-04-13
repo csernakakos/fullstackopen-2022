@@ -61,6 +61,8 @@ const DELETE_blog = async (request, response) => {
   const {id} = request.params;
   const {user} = request;
 
+  console.log(request);
+
   if (!user) {
     return response.status(401).json({
       error: "You're not authorized."

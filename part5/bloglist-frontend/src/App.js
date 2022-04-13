@@ -10,6 +10,7 @@ import {POST_login} from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
+  const [updatedBlogs, setUpdatedBlogs] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -27,6 +28,7 @@ const App = () => {
       const user = userJSON;
       setUser(userJSON);
       setToken(user.token);
+      // console.log(user.token);
     }
   }, [])
 
@@ -50,10 +52,24 @@ const App = () => {
   }
 
   useEffect(() => {
-    GET_all_blogs().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [blogs])
+    // console.log("ONLY RUNS ONCE")
+    async function fetchData() {
+      const blogs = await GET_all_blogs()
+      setBlogs(blogs)  
+    }
+    fetchData();
+  }, [])
+
+  useEffect(() => {
+    if (updatedBlogs) {
+      async function fetchData() {
+        const blogs = await GET_all_blogs()
+        setBlogs(blogs)  
+      }
+      fetchData();
+      setUpdatedBlogs(false);
+    }
+  }, [updatedBlogs])
 
   return (
     <div>
@@ -85,11 +101,15 @@ const App = () => {
 
         <BlogList
           blogs={blogs}
+          setBlogs={setBlogs}
+          setUpdatedBlogs={setUpdatedBlogs}
+          user={user}
         />
 
 
         <CreateBlog
             setBlogs={setBlogs}
+            setUpdatedBlogs={setUpdatedBlogs}
             blogs={blogs}
             setSuccessMessage={setSuccessMessage}
             setErrorMessage={setErrorMessage}

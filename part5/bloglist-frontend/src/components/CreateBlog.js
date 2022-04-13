@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import {POST_blog} from '../services/blogs'
 import {useState} from "react";
 
 export default function CreateBlog({
     setBlogs,
+    setUpdatedBlogs,
     blogs,
     setSuccessMessage,
     setErrorMessage,
@@ -34,6 +36,7 @@ export default function CreateBlog({
     
     // setBlogs
     setBlogs(blogs);
+    setUpdatedBlogs(true);
 
     // seStatusMessage
     setSuccessMessage("New blog added! :)");
@@ -91,4 +94,12 @@ export default function CreateBlog({
         }
         </>
     )
+}
+
+CreateBlog.propTypes = {
+    setBlogs: PropTypes.func.isRequired,
+    setUpdatedBlogs: PropTypes.func.isRequired,
+    // blogs: PropTypes.func.isRequired,
+    setSuccessMessage: PropTypes.func.isRequired,
+    setErrorMessage: PropTypes.func.isRequired,
 }
