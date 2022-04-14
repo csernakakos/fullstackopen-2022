@@ -6,6 +6,7 @@ const logger = require("./utils/logger");
 const blogsRouter = require("./routers/blogsRouter");
 const usersRouter = require("./routers/usersRouter");
 const loginRouter = require("./routers/loginRouter");
+// const testingRouter = require("./routers/testingRouter");
 
 // EXPRESS APP
 const app = express();
@@ -26,6 +27,12 @@ app.get("/", (req, res) => {
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+
+if (process.env.NODE_ENV === "test") {
+    const testingRouter = require("./routers/testingRouter");
+    app.use("/api/testing", testingRouter);
+}
+
 
 app.listen(config.PORT, () => {
     logger.info(`BLOG-LIST running on port ${config.PORT}...`)

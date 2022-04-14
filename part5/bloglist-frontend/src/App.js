@@ -45,6 +45,9 @@ const App = () => {
 
       window.localStorage.setItem("BlogUser", JSON.stringify(user))
 
+      setSuccessMessage("Welcome, dear user!")
+      setTimeout(() => {setSuccessMessage(null)}, 5000)
+
     } catch (err) {
       setErrorMessage("This user does not exist, or the username or password is wrong.")
       setTimeout(() => {setErrorMessage(null)}, 5000)

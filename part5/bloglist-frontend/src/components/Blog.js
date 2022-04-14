@@ -43,16 +43,18 @@ const Blog = ({blog, blogs, setBlogs, setUpdatedBlogs, user}) => {
   return (
     <div>
       <div>
-      {blog.title} | {blog.author} 
+        <span className="blogTitle">{blog.title}</span>
+        |
+        <span className="blogAuthor">{blog.author}</span>
       {showDetails
         ? <button onClick={() => {setShowDetails(false)}}>hide</button>
-        : <button onClick={() => {setShowDetails(true)}}>view</button>
+        : <button className="showDetailsBtn" onClick={() => {setShowDetails(true)}}>view</button>
       }
       </div>
       {showDetails && 
       <div>
-        <p>{blog.url}</p>
-        <p>Likes: {blog.likes}</p> <button onClick={increaseLikes}>like!</button>
+        <p className="blogURL">{blog.url}</p>
+        <p className="blogLikes">Likes: {blog.likes}</p> <button onClick={increaseLikes}>like!</button>
         <p>{blog.user[0].username}</p>
         {isBlogCreatedByCurrentUser && <button onClick={deleteBlog}>delete</button>}
       </div>

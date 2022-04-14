@@ -15,6 +15,7 @@ export default function LoginForm({
             value={username}
             name="Username"
             type="text"
+            id="usernameINPUT"
           />
   
         </div>
@@ -26,11 +27,14 @@ export default function LoginForm({
             value={password}
             name="Password"
             type="password"
+            id="passwordINPUT"
           />
   
         </div>
   
-        <button type="submit">Log in</button>
+        <button 
+        id="loginBUTTON"
+        type="submit">Log in</button>
   
       </form>
       )
